@@ -1,0 +1,25 @@
+[remap]
+
+importer="font_data_image"
+type="FontFile"
+uid="uid://brgn5gpk4gfyx"
+path="res://.godot/imported/cellmates_font.png-eba2ef903c50378bf0d3bb0add53e73c.fontdata"
+
+[deps]
+
+source_file="res://media/cellmates_font.png"
+dest_files=["res://.godot/imported/cellmates_font.png-eba2ef903c50378bf0d3bb0add53e73c.fontdata"]
+
+[params]
+
+character_ranges=PackedStringArray("\' \'", "33-47", "0-9", "58-64", "65-90", "91-96", "97-122", "123-126")
+kerning_pairs=PackedStringArray("")
+columns=19
+rows=5
+image_margin=Rect2i(0, 0, 0, 0)
+character_margin=Rect2i(0, 0, 0, 0)
+ascent=5
+descent=2
+fallbacks=[]
+compress=true
+scaling_mode=1

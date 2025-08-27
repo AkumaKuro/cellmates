@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cij3r4xadtla2"]
+
+[ext_resource type="FontFile" uid="uid://brgn5gpk4gfyx" path="res://media/cellmates_font.png" id="1_470mv"]
+
+[resource]
+default_font = ExtResource("1_470mv")
