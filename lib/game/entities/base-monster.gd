@@ -12,36 +12,36 @@ class EntityBaseMonster extends EntityBaseActor:
 	var stayOnPlatform =  true
 	func init(x, y, settings):
 
-		this.parent(x, y, settings);
-		this.spawner = settings.spawner;
-		this.setupAnimation(settings.spriteOffset if settings.spriteOffset else 0);
+		parent(x, y, settings);
+		spawner = settings.spawner;
+		setupAnimation(settings.spriteOffset if settings.spriteOffset else 0);
 
 	func update():
 
-		this.parent();
-		this.onUpdateAI();
+		parent();
+		onUpdateAI();
 
 	func onUpdateAI():
 
-		if(this.stayOnPlatform):
+		if(stayOnPlatform):
 
 			# near an edge? return!
 			if (ig.game.collisionMap.getTile(
-				this.pos.x + (- this.lookAhead if this.flip else this.size.x + this.lookAhead),
-				this.pos.y + this.size.y + 1
+				pos.x + (-lookAhead if flip else size.x + lookAhead),
+				pos.y + size.y + 1
 			) == 0
-				&& this.standing):
+				&& standing):
 
-				this.flip = !this.flip;
+				flip = !flip;
 
 
 
 		#TODO need to look into why monsters get stuck and switch back and forth on edges, maybe need a delay?
-		var xdir = -1 if this.flip else 1;
-		this.vel.x = this.speed * xdir;
+		var xdir = -1 if flip else 1;
+		vel.x = speed * xdir;
 
-		if(this.currentAnim):
-			this.currentAnim.flip.x = this.flip;
+		if(currentAnim):
+			currentAnim.flip.x = flip;
 
 	func handleMovementTrace(res):
 
