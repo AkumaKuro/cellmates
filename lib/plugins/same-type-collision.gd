@@ -12,4 +12,3 @@ ig.module('plugins.same-type-collision').requires('impact.entity').defines(funct
 		originalCheckPair.call(ig.Entity, a, b);
 	};
 });
-
