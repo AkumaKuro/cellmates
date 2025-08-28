@@ -1,9 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://daf6lh81k4qjo"]
+[gd_scene load_steps=5 format=3 uid="uid://daf6lh81k4qjo"]
 
+[ext_resource type="Script" uid="uid://byppvcvxbj7vu" path="res://lib/game/main.gd" id="1_3wnv2"]
 [ext_resource type="AudioStream" uid="uid://dbpw7d42ocdqt" path="res://media/audio/bg_music.ogg" id="1_qyo8t"]
+[ext_resource type="PackedScene" uid="uid://bji8jsah0fvw8" path="res://scenes/title_scene.tscn" id="2_qknjy"]
+[ext_resource type="PackedScene" uid="uid://7es1o235cij4" path="res://prefabs/pause_screen.tscn" id="3_ipu8a"]
 
-[node name="game" type="Node"]
+[node name="game" type="Node" node_paths=PackedStringArray("pause_screen", "music_player")]
+script = ExtResource("1_3wnv2")
+pause_screen = NodePath("PauseScreen")
+music_player = NodePath("music_player")
+next_scene = ExtResource("2_qknjy")
 
 [node name="music_player" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("1_qyo8t")
 volume_db = 0.5
+
+[node name="PauseScreen" parent="." instance=ExtResource("3_ipu8a")]
