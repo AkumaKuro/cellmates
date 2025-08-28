@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://daf6lh81k4qjo"]
+
+[ext_resource type="AudioStream" uid="uid://dbpw7d42ocdqt" path="res://media/audio/bg_music.ogg" id="1_qyo8t"]
+
+[node name="game" type="Node"]
+
+[node name="music_player" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_qyo8t")
+volume_db = 0.5
