@@ -4,7 +4,7 @@ var levels = levels || [];
 func _init() -> void:
 	levels.push(LevelLevel1);
 
-class LevelScene extends Game:
+class LevelScene extends Node: # Inherits Game
 	var gravity = 300
 
 	var font = ig.Font.new('media/04b03.font.png')
@@ -12,6 +12,8 @@ class LevelScene extends Game:
 	var oneup = ig.Image.new('media/1up.png')
 
 	var vel: Vector2 = Vector2(20, 0)
+	@export var player: Player
+
 
 	func init():
 		this.loadLevel(ig.copy(ig.levels[ig.currentLevel]));
@@ -20,7 +22,6 @@ class LevelScene extends Game:
 
 		this.goal.on('player-made-it', this.onPlayerMadeIt.bind(this));
 
-		this.player = this.getEntitiesByType(EntityPlayer)[0];
 		this.player.on('player-death', this.onPlayerDeath.bind(this));
 
 		this.heart = this.getEntitiesByType(EntityHeart)[0];

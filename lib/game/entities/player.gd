@@ -1,4 +1,4 @@
-class_name EntityPlayer
+class_name Player
 extends CharacterBody2D
 
 var size: Vector2 = Vector2(8, 14)

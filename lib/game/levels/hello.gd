@@ -1,7 +1,7 @@
 var LevelHello= {
 	"entities": [
 		{
-			"type":"EntityPlayer",
+			"type":"Player",
 			"x":48,"y":178
 		},{
 			"type":"EntityHeart",

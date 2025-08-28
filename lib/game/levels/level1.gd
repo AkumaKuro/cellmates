@@ -1,6 +1,6 @@
 var LevelLevel1 = {
 	"entities":[{
-		"type":"EntityPlayer","x":48,"y":178
+		"type":"Player","x":48,"y":178
 	},{
 		"type":"EntityHeart","x":12,"y":92
 	},{
