@@ -1,92 +1,87 @@
+class_name EntityPlayer
+extends CharacterBody2D
 
-class EntityPlayer extends Entity:
-	var size: Vector2 = Vector2(8, 14)
-	var offset: Vector2 = Vector2(4, 2)
-	var maxVel: Vector2 = Vector2(100, 200)
-	var friction: Vector2 = Vector2(600, 0)
-	var isPlayer: bool = true
-	var visible: bool = true
-	var etype: String = 'player'
+var size: Vector2 = Vector2(8, 14)
+var offset: Vector2 = Vector2(4, 2)
+var maxVel: Vector2 = Vector2(100, 200)
+var friction: Vector2 = Vector2(600, 0)
+var isPlayer: bool = true
+var etype: String = 'player'
 
-	var type = ig.Entity.TYPE.A
-	var checkAgainst = ig.Entity.TYPE.NONE
+var type = 'ig.Entity.TYPE.A'
+var checkAgainst = 'ig.Entity.TYPE.NONE'
 
-	var animSheet = ig.AnimationSheet.new('media/player.png', 16, 16)
+@export var animSheet: AnimatedSprite2D
 
-	var flip = false
-	var accelGround = 400
-	var accelAir = 200
-	var jump = 500
-	var jumpSfx = ig.Sound.new('media/audio/jump.*')
+var flip = false
+var accelGround = 400
+var accelAir = 200
+var jump = 500
+@export var jumpSfx: AudioStreamPlayer
 
-	var health = 1
+var health = 1
 
-	var collides :
-		get:
-			if(this.__collides):
-				return this.__collides;
+var collides :
+	get:
+		if(self.__collides):
+			return self.__collides;
 
-			if (this.vel.y <= 0):
-				return ig.Entity.COLLIDES.NONE;
+		if (self.vel.y <= 0):
+			return 'ig.Entity.COLLIDES.NONE'
 
-			return ig.Entity.COLLIDES.PASSIVE;
+		return 'ig.Entity.COLLIDES.PASSIVE'
 
-		set(c):
-			this.__collides = c;
+	set(c):
+		self.__collides = c;
 
-	var canStandOnCell:
-		get:
-			return this.collides == ig.Entity.COLLIDES.PASSIVE && !this.standing;
+var canStandOnCell:
+	get:
+		return self.collides == 'ig.Entity.COLLIDES.PASSIVE' && !self.standing;
 
-	func _init(x, y, settings) -> void:
-		this.parent(x, y, settings);
-
-		this.addAnim('idle', 1, [0]);
-		this.addAnim('run', 0.07, [0, 1, 2, 3, 4, 5]);
-		this.addAnim('jump', 1, [9]);
-		this.addAnim('fall', 0.4, [6, 7]);
+func _init(x, y, settings) -> void:
+	pass #super(x, y, settings);
 
 
-	func update():
-		var accel = this.accelGround if this.standing else this.accelAir
-		if (ig.input.state('left')):
-			this.accel.x = - accel;
-			this.flip = true;
+func update():
+	var accel = self.accelGround if self.standing else self.accelAir
+	if Input.is_action_pressed('left'):
+		self.accel.x = -accel;
+		self.flip = true;
 
-		elif (ig.input.state('right')):
-			this.accel.x = accel;
-			this.flip = false;
+	elif Input.is_action_pressed('right'):
+		self.accel.x = accel;
+		self.flip = false;
 
-		else:
-			this.accel.x = 0;
-
-
-		if (this.standing && ig.input.pressed('jump')):
-			this.vel.y = - this.jump;
-			this.jumpSfx.play();
+	else:
+		self.accel.x = 0;
 
 
-		if (this.vel.y < 0):
-			this.currentAnim = this.anims.jump;
-
-		elif (this.vel.y > 0):
-			this.currentAnim = this.anims.fall;
-
-		elif (this.vel.x != 0):
-			this.currentAnim = this.anims.run;
-
-		else:
-			this.currentAnim = this.anims.idle;
+	if (self.standing && Input.is_action_pressed('jump')):
+		self.vel.y = - self.jump;
+		self.jumpSfx.play();
 
 
-		this.currentAnim.flip.x = this.flip;
+	if (self.vel.y < 0):
+		self.currentAnim = self.anims.jump;
 
-		this.parent();
+	elif (self.vel.y > 0):
+		self.currentAnim = self.anims.fall;
 
-		if(this.standing):
-			this.lastStandingPos = ig.copy(this.pos);
+	elif (self.vel.x != 0):
+		self.currentAnim = self.anims.run;
+
+	else:
+		self.currentAnim = self.anims.idle;
+
+
+	self.currentAnim.flip.x = self.flip;
 
 
 
-	func receiveDamage():
-		this.fireEvent('player-death', this);
+	if(self.standing):
+		self.lastStandingPos = self.pos;
+
+signal player_death
+
+func receiveDamage():
+	player_death.emit()
