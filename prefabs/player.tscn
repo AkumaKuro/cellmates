@@ -97,12 +97,16 @@ animations = [{
 "speed": 14.29
 }]
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "jump_sound")]
 script = ExtResource("1_r66lb")
+sprite = NodePath("sprite")
+jump_sound = NodePath("jump_audio")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_sd3sa")
-animation = &"fall"
+animation = &"idle"
+offset = Vector2(4, 2)
 
 [node name="jump_audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_4dohe")

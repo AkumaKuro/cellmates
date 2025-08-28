@@ -1,23 +1,34 @@
 class_name Player
 extends CharacterBody2D
 
-var size: Vector2 = Vector2(8, 14)
-var offset: Vector2 = Vector2(4, 2)
-var maxVel: Vector2 = Vector2(100, 200)
-var friction: Vector2 = Vector2(600, 0)
+var size: Vector2i = Vector2i(8, 14)
+var offset: Vector2i = Vector2i(4, 2)
+var maxVel: Vector2i = Vector2i(100, 200)
+var friction: Vector2i = Vector2i(600, 0)
 var isPlayer: bool = true
 var etype: String = 'player'
+
+var vel: Vector2i = Vector2i.ZERO
+
+var is_standing: bool = true
 
 var type = 'ig.Entity.TYPE.A'
 var checkAgainst = 'ig.Entity.TYPE.NONE'
 
-@export var animSheet: AnimatedSprite2D
+@export var sprite: AnimatedSprite2D
 
-var flip = false
-var accelGround = 400
-var accelAir = 200
-var jump = 500
-@export var jumpSfx: AudioStreamPlayer
+var flip: bool = false
+
+@export_group('Acceleration', 'accel')
+@export var accel_ground: int = 400
+@export var accel_air: int = 200
+var accel: Vector2i = Vector2i.ZERO
+
+
+@export var jump: int = 500
+@export var jump_sound: AudioStreamPlayer
+
+var last_position: Vector2i = Vector2i.ZERO
 
 var health = 1
 
@@ -43,43 +54,38 @@ func _init(x, y, settings) -> void:
 
 
 func update():
-	var accel = self.accelGround if self.standing else self.accelAir
-	if Input.is_action_pressed('left'):
-		self.accel.x = -accel;
-		self.flip = true;
+	accel.x = accel_ground if is_standing else accel_air
 
-	elif Input.is_action_pressed('right'):
-		self.accel.x = accel;
-		self.flip = false;
+	var input: int = int(Input.get_axis(&'left', &'right'))
+	var direction: int = signi(input)
+	if input != 0:
+		flip = direction == -1
 
-	else:
-		self.accel.x = 0;
+	accel.x *= direction
 
 
-	if (self.standing && Input.is_action_pressed('jump')):
-		self.vel.y = - self.jump;
-		self.jumpSfx.play();
+	if is_standing && Input.is_action_pressed(&'jump'):
+		vel.y = -jump
+		jump_sound.play()
 
 
-	if (self.vel.y < 0):
-		self.currentAnim = self.anims.jump;
+	if vel.y < 0:
+		sprite.play(&'jump')
 
 	elif (self.vel.y > 0):
-		self.currentAnim = self.anims.fall;
+		sprite.play(&'fall')
 
 	elif (self.vel.x != 0):
-		self.currentAnim = self.anims.run;
+		sprite.play(&'run')
 
 	else:
-		self.currentAnim = self.anims.idle;
+		sprite.play(&'idle')
 
 
-	self.currentAnim.flip.x = self.flip;
+	scale.x *= direction
 
-
-
-	if(self.standing):
-		self.lastStandingPos = self.pos;
+	if is_standing:
+		last_position = position
 
 signal player_death
 
